@@ -53,10 +53,12 @@ function toXml(obj) {
  * XML 转对象（简单解析）
  */
 function fromXml(xml) {
+  // 去掉外层 <xml>...</xml> 包裹，只解析内部子元素
+  const inner = xml.replace(/^[\s\S]*?<xml>([\s\S]*?)<\/xml>[\s\S]*$/, '$1')
   const result = {}
   const re = /<(\w+)><!\[CDATA\[([\s\S]*?)\]\]><\/\1>|<(\w+)>([\s\S]*?)<\/\3>/g
   let m
-  while ((m = re.exec(xml)) !== null) {
+  while ((m = re.exec(inner)) !== null) {
     result[m[1] || m[3]] = m[2] !== undefined ? m[2] : m[4]
   }
   return result
