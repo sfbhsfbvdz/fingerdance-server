@@ -1,0 +1,100 @@
+<!-- pages/profile/index.wxml -->
+<view class="container">
+
+  <!-- ── 顶部渐变头部 ── -->
+  <view class="profile-hero">
+
+    <!-- 头像：微信官方 open-type="chooseAvatar" -->
+    <button
+      class="avatar-btn"
+      open-type="chooseAvatar"
+      bindchooseavatar="onChooseAvatar"
+    >
+      <image
+        wx:if="{{avatarUrl}}"
+        class="avatar-img"
+        src="{{avatarUrl}}"
+        mode="aspectFill"
+      />
+      <view wx:else class="avatar-placeholder">
+        <text class="avatar-placeholder__icon">💅</text>
+        <text class="avatar-placeholder__tip">点击设置头像</text>
+      </view>
+    </button>
+
+    <!-- 昵称：微信官方 type="nickname" -->
+    <view class="nickname-wrap">
+      <input
+        class="nickname-input"
+        type="nickname"
+        value="{{tempNickName}}"
+        placeholder="{{nickName || '点击设置昵称'}}"
+        placeholder-class="nickname-placeholder"
+        bindblur="onNickNameBlur"
+      />
+      <text class="nickname-edit-tip" wx:if="{{!nickName}}">轻触编辑 ✏️</text>
+    </view>
+
+    <!-- openid 展示（脱敏） -->
+    <text class="openid-text" wx:if="{{openid}}">ID：...{{openid.slice(-8)}}</text>
+    <text class="openid-text" wx:else>登录中...</text>
+
+  </view>
+
+  <!-- 保存按钮（有修改时才出现） -->
+  <view class="save-wrap" wx:if="{{editing}}">
+    <button class="btn-save" bindtap="onSave">保存信息</button>
+  </view>
+
+  <!-- ── 未设置信息引导卡 ── -->
+  <view class="guide-card" wx:if="{{!nickName && !editing}}">
+    <text class="guide-card__icon">🌸</text>
+    <text class="guide-card__title">完善你的信息</text>
+    <text class="guide-card__desc">设置头像和昵称，让参团记录更完整</text>
+    <text class="guide-card__desc">点击上方头像和名字即可设置</text>
+  </view>
+
+  <!-- ── 订单快捷入口 ── -->
+  <view class="section-card card" style="margin: 20rpx 32rpx 0">
+    <text class="section-card__title">我的订单</text>
+    <view class="order-shortcuts">
+      <view class="order-shortcut" bindtap="onGoOrders" hover-class="tap-active" hover-stay-time="100">
+        <text class="order-shortcut__icon">⏳</text>
+        <text class="order-shortcut__label">待成团</text>
+      </view>
+      <view class="order-shortcut" bindtap="onGoOrders" hover-class="tap-active" hover-stay-time="100">
+        <text class="order-shortcut__icon">✅</text>
+        <text class="order-shortcut__label">已成团</text>
+      </view>
+      <view class="order-shortcut" bindtap="onGoOrders" hover-class="tap-active" hover-stay-time="100">
+        <text class="order-shortcut__icon">🌸</text>
+        <text class="order-shortcut__label">已使用</text>
+      </view>
+      <view class="order-shortcut" bindtap="onGoOrders" hover-class="tap-active" hover-stay-time="100">
+        <text class="order-shortcut__icon">📋</text>
+        <text class="order-shortcut__label">全部</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- ── 功能菜单 ── -->
+  <view class="menu-card card" style="margin: 20rpx 32rpx">
+    <view class="menu-item" bindtap="onService" hover-class="tap-active" hover-stay-time="100">
+      <text class="menu-item__icon">💬</text>
+      <text class="menu-item__label">联系客服</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+    <view class="menu-divider"></view>
+    <view class="menu-item" bindtap="onAbout" hover-class="tap-active" hover-stay-time="100">
+      <text class="menu-item__icon">🌸</text>
+      <text class="menu-item__label">关于指尖芭蕾</text>
+      <text class="menu-item__arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 品牌标语 -->
+  <view class="brand-footer">
+    <text class="brand-footer__text">✦ 让美丽在指尖绽放 ✦</text>
+  </view>
+
+</view>

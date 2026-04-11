@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "指尖芭蕾美甲美容",
+  "navigationBarBackgroundColor": "#F4A1B5",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#FFF9F6",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "activity-card": "../../components/activity-card/activity-card"
+  }
+}

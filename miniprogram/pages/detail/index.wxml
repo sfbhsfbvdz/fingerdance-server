@@ -1,0 +1,135 @@
+<!-- pages/detail/index.wxml -->
+<view class="container" wx:if="{{!loading && activity}}">
+
+  <!-- 商品大图 -->
+  <view class="hero-img-wrap">
+    <image
+      class="hero-img"
+      src="{{activity.imageUrl || '/assets/placeholder.png'}}"
+      mode="aspectFill"
+    />
+    <!-- 渐变遮罩 -->
+    <view class="hero-img__gradient"></view>
+  </view>
+
+  <!-- 内容卡片（上浮覆盖图片底部） -->
+  <view class="content-card">
+
+    <!-- 标题 & 标签 -->
+    <view class="content-card__header">
+      <text class="content-card__title">{{activity.title}}</text>
+      <view class="content-card__tags">
+        <text
+          wx:for="{{activity.tags}}"
+          wx:key="*this"
+          class="tag {{index === 0 ? 'tag-pink' : 'tag-gold'}}"
+        >{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 价格区 -->
+    <view class="price-section">
+      <view class="price-section__main">
+        <text class="price-label">拼团价</text>
+        <text class="price-current">¥{{activity.groupPrice}}</text>
+        <text class="price-original">¥{{activity.originalPrice}}</text>
+      </view>
+      <view class="price-section__save">
+        <text>省 {{activity.originalPrice - activity.groupPrice}} 元</text>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 拼团进度 -->
+    <view class="group-status" wx:if="{{activity.status !== 'ended'}}">
+      <view class="group-status__header">
+        <text class="group-status__title">拼团进度</text>
+        <text class="group-status__count">{{activity.currentParticipants}}/{{activity.minParticipants}} 人</text>
+      </view>
+      <view class="group-status__bar">
+        <view class="group-status__fill" style="width: {{progressPercent}}%"></view>
+      </view>
+      <text class="group-status__tip" wx:if="{{progressPercent < 100}}">
+        还差 {{activity.minParticipants - activity.currentParticipants}} 人即可成团
+      </text>
+      <text class="group-status__tip group-status__tip--success" wx:else>
+        🎉 已成团！快来抢购
+      </text>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 已参团用户头像 -->
+    <view class="participants" wx:if="{{participants.length}}">
+      <text class="participants__label">已参团</text>
+      <view class="participants__avatars">
+        <view
+          wx:for="{{participants}}"
+          wx:key="id"
+          class="participants__avatar"
+        >
+          <text>{{item.name.charAt(0)}}</text>
+        </view>
+        <view class="participants__more" wx:if="{{activity.currentParticipants > 5}}">
+          <text>+{{activity.currentParticipants - 5}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 活动详情文字 -->
+    <view class="detail-section">
+      <text class="detail-section__title">活动详情</text>
+      <text class="detail-section__content">{{activity.description}}</text>
+    </view>
+
+    <!-- 截止时间 -->
+    <view class="deadline-row" wx:if="{{activity.endTime}}">
+      <text class="deadline-row__icon">⏰</text>
+      <text class="deadline-row__text">活动截止：{{activity.endTime}}</text>
+    </view>
+
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button class="bottom-bar__order" bindtap="onViewOrder">我的订单</button>
+    <button
+      class="bottom-bar__join {{(activity.status !== 'active' || hasJoined) ? 'bottom-bar__join--disabled' : ''}} {{paying ? 'bottom-bar__join--loading' : ''}}"
+      bindtap="onPay"
+      disabled="{{activity.status !== 'active' || paying || hasJoined}}"
+    >
+      <block wx:if="{{paying}}">支付中...</block>
+      <block wx:elif="{{hasJoined && joinedStatus === 'unpaid'}}">待支付（请在订单页完成）</block>
+      <block wx:elif="{{hasJoined && joinedStatus === 'success'}}">已成团 ✓</block>
+      <block wx:elif="{{hasJoined}}">已参团 待成团</block>
+      <block wx:elif="{{activity.status === 'active'}}">
+        <text>¥{{activity.groupPrice}} 立即支付</text>
+      </block>
+      <block wx:elif="{{activity.status === 'pending'}}">即将开始</block>
+      <block wx:else>活动已结束</block>
+    </button>
+  </view>
+
+  <!-- 底部安全区 -->
+  <view style="height: env(safe-area-inset-bottom);"></view>
+
+</view>
+
+<!-- 骨架屏 -->
+<view wx:if="{{loading}}" class="skeleton">
+  <view class="skeleton__hero"></view>
+  <view class="skeleton__card">
+    <view class="skeleton__line skeleton__line--long"></view>
+    <view class="skeleton__line skeleton__line--short" style="margin-top:16rpx"></view>
+    <view class="skeleton__divider"></view>
+    <view class="skeleton__line skeleton__line--mid"></view>
+    <view class="skeleton__bar"></view>
+    <view class="skeleton__divider"></view>
+    <view class="skeleton__line skeleton__line--long"></view>
+    <view class="skeleton__line skeleton__line--long" style="margin-top:12rpx"></view>
+    <view class="skeleton__line skeleton__line--mid" style="margin-top:12rpx"></view>
+  </view>
+</view>

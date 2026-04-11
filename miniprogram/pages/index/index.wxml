@@ -1,0 +1,103 @@
+<!-- pages/index/index.wxml -->
+<view class="container">
+
+  <!-- ① 顶部 Hero 渐变 Banner -->
+  <view class="hero">
+    <view class="hero__overlay">
+      <view class="hero__logo">✦</view>
+      <text class="hero__name">{{storeName}}</text>
+      <text class="hero__slogan">{{storeSlogan}}</text>
+    </view>
+    <!-- 装饰性花瓣 -->
+    <view class="hero__petal hero__petal--1"></view>
+    <view class="hero__petal hero__petal--2"></view>
+    <view class="hero__petal hero__petal--3"></view>
+  </view>
+
+  <!-- ② 店铺信息卡 -->
+  <view class="store-card card">
+    <view class="store-card__main">
+      <view class="store-card__avatar">
+        <text class="store-card__avatar-icon">💅</text>
+      </view>
+      <view class="store-card__info">
+        <text class="store-card__name">{{storeName}}</text>
+        <view class="store-card__stats">
+          <text class="store-card__stat">成员 {{memberCount}}+</text>
+          <text class="store-card__dot">·</text>
+          <text class="store-card__stat">跟团 {{followCount}}+</text>
+        </view>
+      </view>
+    </view>
+    <view class="store-card__actions">
+      <button class="btn-service" bindtap="onServiceTap">
+        <text>💬 客服</text>
+      </button>
+      <button class="btn-follow {{isFollowed ? 'btn-follow--active' : ''}}" bindtap="onFollowTap">
+        <text>{{isFollowed ? '✓ 已订阅' : '+ 订阅'}}</text>
+      </button>
+    </view>
+    <!-- 跟团人数横幅 -->
+    <view class="store-card__banner">
+      <text class="store-card__banner-icon">🛍</text>
+      <text class="store-card__banner-text">{{followCount}}+ 人跟 TA 做美甲</text>
+    </view>
+  </view>
+
+  <!-- ③ 公告滚动条 -->
+  <view class="notice-bar">
+    <text class="notice-bar__icon">📢</text>
+    <view class="notice-bar__content">
+      <text class="notice-bar__text">{{noticeText}}</text>
+    </view>
+    <text class="notice-bar__arrow">›</text>
+  </view>
+
+  <!-- ④ 最新参团通知（类似快团团的动态提示） -->
+  <view class="join-toast" wx:if="{{latestJoin}}">
+    <view class="join-toast__avatar">
+      <text>👤</text>
+    </view>
+    <text class="join-toast__text">
+      <text class="join-toast__name">{{latestJoin.name}}</text>
+      <text class="join-toast__time"> {{latestJoin.minutesAgo}}分钟前参团了「{{latestJoin.activityTitle}}」</text>
+    </text>
+  </view>
+
+  <!-- ⑤ 爆款活动 -->
+  <view class="section" style="margin-top: 32rpx;">
+    <view class="section-header">
+      <view class="section-title">爆款活动</view>
+      <text class="section-more" bindtap="onViewAll" hover-class="tap-active" hover-stay-time="100">查看全部 ›</text>
+    </view>
+
+    <view class="activities-wrap" wx:if="{{!loading}}">
+      <activity-card
+        wx:for="{{hotActivities}}"
+        wx:key="id"
+        activity="{{item}}"
+        mode="full"
+        bindtap="onActivityTap"
+      />
+    </view>
+
+    <!-- 加载骨架 -->
+    <view wx:if="{{loading}}" class="skeleton-wrap">
+      <view class="skeleton-card" wx:for="{{[1,2]}}" wx:key="*this">
+        <view class="skeleton-img"></view>
+        <view class="skeleton-line skeleton-line--long"></view>
+        <view class="skeleton-line skeleton-line--short"></view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{!loading && hotActivities.length === 0}}" class="empty-state">
+      <text class="empty-icon">🌸</text>
+      <text class="empty-text">暂无活动，敬请期待</text>
+    </view>
+  </view>
+
+  <!-- ⑥ 底部间距（避免被 tabBar 遮挡） -->
+  <view style="height: 30rpx;"></view>
+
+</view>

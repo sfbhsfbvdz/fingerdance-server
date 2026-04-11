@@ -1,0 +1,62 @@
+<!-- components/activity-card/activity-card.wxml -->
+<view class="card {{mode}}" bindtap="onTap" hover-class="tap-active" hover-stay-time="100">
+
+  <!-- 商品图片 -->
+  <view class="card__img-wrap">
+    <image
+      class="card__img"
+      src="{{activity.imageUrl || '/assets/placeholder.png'}}"
+      mode="aspectFill"
+      lazy-load
+    />
+    <!-- 状态角标 -->
+    <view wx:if="{{activity.status === 'active'}}" class="card__badge card__badge--active">进行中</view>
+    <view wx:elif="{{activity.status === 'pending'}}" class="card__badge card__badge--pending">即将开始</view>
+    <view wx:elif="{{activity.status === 'ended'}}" class="card__badge card__badge--ended">已结束</view>
+    <!-- 即将售罄提示 -->
+    <view wx:if="{{progressPercent >= 80 && activity.status === 'active'}}" class="card__hot">🔥 即将售罄</view>
+  </view>
+
+  <!-- 内容区 -->
+  <view class="card__body">
+    <text class="card__title">{{activity.title}}</text>
+
+    <!-- 标签 -->
+    <view class="card__tags" wx:if="{{activity.tags && activity.tags.length}}">
+      <text
+        wx:for="{{activity.tags}}"
+        wx:key="*this"
+        class="tag tag-{{index === 0 ? 'pink' : 'gold'}}"
+      >{{item}}</text>
+    </view>
+
+    <!-- 价格 -->
+    <view class="card__price-row">
+      <text class="price-current">¥{{activity.groupPrice}}</text>
+      <text class="price-original">¥{{activity.originalPrice}}</text>
+      <text class="card__save">省{{activity.originalPrice - activity.groupPrice}}元</text>
+    </view>
+
+    <!-- 拼团进度 -->
+    <view class="card__progress" wx:if="{{activity.status === 'active'}}">
+      <view class="card__progress-bar">
+        <view class="card__progress-fill" style="width: {{progressPercent}}%"></view>
+      </view>
+      <text class="card__progress-text">{{activity.currentParticipants}}/{{activity.minParticipants}}人</text>
+    </view>
+
+    <!-- 截止时间 -->
+    <text class="card__deadline" wx:if="{{activity.endTime}}">截止 {{activity.endTime}}</text>
+  </view>
+
+  <!-- 底部操作按钮（full 模式显示） -->
+  <view class="card__footer" wx:if="{{mode === 'full'}}">
+    <view class="card__participants">
+      <text class="card__participants-count">{{activity.currentParticipants}}人已参团</text>
+    </view>
+    <view class="card__action {{activity.status !== 'active' ? 'card__action--disabled' : ''}}">
+      <text>{{activity.status === 'active' ? '立即参团' : (activity.status === 'pending' ? '即将开始' : '已结束')}}</text>
+    </view>
+  </view>
+
+</view>

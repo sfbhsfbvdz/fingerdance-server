@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/activity/index",
+    "pages/detail/index",
+    "pages/order/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F4A1B5",
+    "navigationBarTitleText": "指尖芭蕾",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF9F6"
+  },
+  "tabBar": {
+    "color": "#9E8E8E",
+    "selectedColor": "#C9956C",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/activity/index",
+        "text": "活动"
+      },
+      {
+        "pagePath": "pages/order/index",
+        "text": "订单"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

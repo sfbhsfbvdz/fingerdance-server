@@ -1,0 +1,19 @@
+{
+  "name": "fingerdance-server",
+  "version": "1.0.0",
+  "description": "指尖芭蕾美甲美容小程序后端",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^9.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.3"
+  }
+}

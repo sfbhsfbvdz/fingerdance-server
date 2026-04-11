@@ -1,0 +1,49 @@
+<!-- pages/order/index.wxml -->
+<view class="container">
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-wrap"><text>加载中...</text></view>
+
+  <!-- 订单列表 -->
+  <view wx:elif="{{orders.length > 0}}" class="list">
+    <view
+      wx:for="{{orders}}"
+      wx:key="id"
+      class="order-card card"
+      data-id="{{item.activityId || item.id}}"
+      bindtap="onOrderTap"
+      hover-class="tap-active"
+      hover-stay-time="100"
+    >
+      <view class="order-card__top">
+        <image
+          class="order-card__img"
+          src="{{item.activityImage}}"
+          mode="aspectFill"
+          lazy-load
+        />
+        <view class="order-card__info">
+          <text class="order-card__title">{{item.activityTitle}}</text>
+          <text class="order-card__date">下单时间：{{item.createdAt}}</text>
+        </view>
+      </view>
+      <view class="order-card__footer">
+        <text class="order-card__price">¥{{item.groupPrice}}</text>
+        <view class="order-card__status" style="color: {{statusMap[item.status].color}}">
+          <text>{{statusMap[item.status].label}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="no-more">— 已经到底了 —</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:else class="empty-state">
+    <text class="empty-icon">🛍</text>
+    <text class="empty-text">还没有订单</text>
+    <button class="btn-primary" style="margin-top: 32rpx; width: 300rpx;" bindtap="onGoActivity">
+      去看活动
+    </button>
+  </view>
+
+</view>

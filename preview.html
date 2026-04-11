@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>指尖芭蕾 — 界面预览</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --pink: #F4A1B5; --pink-dark: #E88EA5;
+  --gold: #C9956C; --beige: #E8D5C4;
+  --bg: #FFF9F6; --text: #3D2C2C;
+  --text-mid: #7A6060; --text-light: #B8A8A8;
+}
+body {
+  font-family: -apple-system, 'PingFang SC', sans-serif;
+  background: #1a1a2e;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 顶部切换 */
+.top-switch {
+  display: flex;
+  gap: 0;
+  margin: 32px 0 28px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50px;
+  padding: 4px;
+}
+.switch-btn {
+  padding: 10px 32px;
+  border-radius: 46px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.25s;
+  color: rgba(255,255,255,0.5);
+  background: transparent;
+}
+.switch-btn.active {
+  background: linear-gradient(135deg, #F4A1B5, #C9956C);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(244,161,181,0.4);
+}
+
+.view { display: none; width: 100%; align-items: flex-start; justify-content: center; padding-bottom: 60px; }
+.view.active { display: flex; }
+
+/* ───── 手机端 ───── */
+.phone-area {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.phone-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.phone-label {
+  color: rgba(255,255,255,0.5);
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.phone {
+  width: 375px;
+  height: 750px;
+  background: #fff;
+  border-radius: 50px;
+  border: 8px solid #2a2a3e;
+  box-shadow: 0 0 0 2px #3a3a5e, 0 30px 80px rgba(0,0,0,0.6);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 刘海 */
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 10px; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 28px;
+  background: #2a2a3e;
+  border-radius: 20px;
+  z-index: 100;
+}
+
+.phone-status {
+  height: 44px;
+  background: var(--pink);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 20px 8px;
+  flex-shrink: 0;
+}
+.phone-status__time { color: #fff; font-size: 13px; font-weight: 700; }
+.phone-status__icons { color: #fff; font-size: 11px; display: flex; gap: 4px; align-items: center; }
+
+.phone-nav {
+  background: var(--pink);
+  padding: 10px 0 14px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.phone-nav__title { color: #fff; font-size: 17px; font-weight: 600; }
+
+.phone-body {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg);
+  scrollbar-width: none;
+}
+.phone-body::-webkit-scrollbar { display: none; }
+
+.phone-tabbar {
+  height: 56px;
+  background: #fff;
+  border-top: 1px solid rgba(232,213,196,0.5);
+  display: flex;
+  flex-shrink: 0;
+}
+.tab-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 10px;
+  color: var(--text-light);
+  cursor: pointer;
+}
+.tab-item.active { color: var(--gold); }
+.tab-item__icon { font-size: 22px; }
+
+/* ── 首页内容 ── */
+.hero {
+  height: 200px;
+  background: linear-gradient(145deg, #F9C0CF 0%, #F4A1B5 50%, #C9956C 100%);
+  position: relative;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.hero__logo { font-size: 32px; margin-bottom: 8px; }
+.hero__name { color: #fff; font-size: 26px; font-weight: 800; letter-spacing: 3px; }
+.hero__slogan { color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 6px; }
+.hero__petal { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.15); }
+.p1 { width: 100px; height: 100px; top: -30px; right: -20px; }
+.p2 { width: 60px; height: 60px; bottom: 10px; left: 15px; }
+
+.store-card {
+  margin: -24px 16px 0;
+  background: #fff;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(244,161,181,0.15);
+  position: relative;
+  z-index: 2;
+}
+.store-card__row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.store-card__avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: linear-gradient(135deg, #FDE8EF, #F4A1B5);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.store-card__name { font-size: 15px; font-weight: 700; color: var(--text); }
+.store-card__stats { font-size: 12px; color: var(--text-light); margin-top: 2px; }
+.store-card__btns { display: flex; gap: 8px; margin-bottom: 10px; }
+.btn-s {
+  flex: 1; height: 34px; border-radius: 20px; border: none;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.btn-service { background: rgba(244,161,181,0.1); color: var(--pink-dark); border: 1px solid rgba(244,161,181,0.3); }
+.btn-follow { background: linear-gradient(135deg, #F4A1B5, #C9956C); color: #fff; }
+.store-card__banner {
+  background: rgba(244,161,181,0.07); border-radius: 8px;
+  padding: 8px 12px; font-size: 12px; color: var(--gold);
+  display: flex; align-items: center; gap: 6px;
+}
+
+.notice-bar {
+  margin: 10px 16px;
+  background: rgba(232,213,196,0.2);
+  border-radius: 8px; padding: 9px 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: #9A7A62;
+}
+
+.join-toast {
+  margin: 0 16px 6px;
+  background: rgba(244,161,181,0.07);
+  border-radius: 8px; padding: 8px 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-mid);
+}
+.join-toast__name { color: var(--pink-dark); font-weight: 600; }
+
+.section-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px 8px;
+}
+.section-title {
+  font-size: 15px; font-weight: 700; color: var(--text);
+  padding-left: 8px; position: relative;
+}
+.section-title::before {
+  content: '';
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 3px; height: 14px;
+  background: linear-gradient(180deg, #F4A1B5, #C9956C);
+  border-radius: 2px;
+}
+.section-more { font-size: 12px; color: var(--text-light); }
+
+/* 活动卡片 */
+.act-card {
+  margin: 0 16px 12px;
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 3px 16px rgba(244,161,181,0.12);
+}
+.act-card__img { width: 100%; height: 160px; object-fit: cover; background: linear-gradient(135deg, #FDE8EF, #E8D5C4); display:flex; align-items:center; justify-content:center; font-size:48px; }
+.act-card__body { padding: 12px 14px 8px; }
+.act-card__title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.act-card__tags { display: flex; gap: 6px; margin-bottom: 10px; }
+.tag {
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+}
+.tag-pink { background: rgba(244,161,181,0.15); color: var(--pink-dark); }
+.tag-gold { background: rgba(201,149,108,0.12); color: var(--gold); }
+.act-card__price { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+.price-cur { color: var(--pink-dark); font-size: 20px; font-weight: 800; }
+.price-cur::before { content: '¥'; font-size: 13px; }
+.price-ori { color: var(--text-light); font-size: 12px; text-decoration: line-through; }
+.price-ori::before { content: '¥'; }
+.act-card__progress { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.progress-bar { flex: 1; height: 5px; background: rgba(232,213,196,0.4); border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #F4A1B5, #C9956C); border-radius: 3px; }
+.progress-text { font-size: 10px; color: var(--text-light); white-space: nowrap; }
+.act-card__footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 8px 14px 12px; border-top: 1px solid rgba(232,213,196,0.25);
+}
+.act-card__joined { font-size: 11px; color: var(--text-light); }
+.act-card__btn {
+  background: linear-gradient(135deg, #F4A1B5, #C9956C);
+  color: #fff; font-size: 12px; font-weight: 600;
+  padding: 6px 16px; border-radius: 20px;
+}
+
+/* ── 详情页 ── */
+.detail-img { width: 100%; height: 220px; object-fit: cover; background: linear-gradient(135deg, #FDE8EF, #F4A1B5); display:flex;align-items:center;justify-content:center;font-size:64px; }
+.detail-card {
+  margin: -20px 12px 0;
+  background: #fff; border-radius: 18px;
+  padding: 20px 16px 16px;
+  box-shadow: 0 4px 20px rgba(244,161,181,0.12);
+  position: relative; z-index: 2;
+}
+.detail-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 10px; line-height: 1.3; }
+.detail-price-row { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.detail-price-label { font-size: 11px; color: var(--pink-dark); background: rgba(244,161,181,0.1); padding: 3px 8px; border-radius: 10px; }
+.detail-price { font-size: 28px; font-weight: 800; color: var(--pink-dark); }
+.detail-price::before { content: '¥'; font-size: 16px; }
+.detail-ori { font-size: 13px; color: var(--text-light); text-decoration: line-through; }
+.detail-ori::before { content: '¥'; }
+.divider { height: 1px; background: rgba(232,213,196,0.3); margin: 12px 0; }
+.group-label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: flex; justify-content: space-between; }
+.group-count { color: var(--gold); }
+.group-bar { height: 8px; background: rgba(232,213,196,0.3); border-radius: 4px; overflow: hidden; margin-bottom: 6px; }
+.group-fill { height: 100%; background: linear-gradient(90deg, #F4A1B5, #C9956C); border-radius: 4px; width: 93%; }
+.group-tip { font-size: 11px; color: var(--text-light); }
+.avatars { display: flex; align-items: center; gap: 4px; margin-top: 14px; }
+.avatars__label { font-size: 12px; color: var(--text-light); margin-right: 6px; }
+.avatar-dot {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #FDE8EF, #F4A1B5);
+  border: 2px solid #fff; margin-left: -6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--pink-dark); font-weight: 700;
+}
+.avatar-dot:first-of-type { margin-left: 0; }
+.detail-desc { margin-top: 14px; }
+.detail-desc__title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.detail-desc__text { font-size: 13px; color: var(--text-mid); line-height: 1.8; white-space: pre-line; }
+.bottom-bar {
+  position: sticky; bottom: 0;
+  background: #fff; padding: 10px 16px 20px;
+  display: flex; gap: 10px;
+  box-shadow: 0 -4px 16px rgba(244,161,181,0.1);
+}
+.bottom-order {
+  flex: 1; height: 44px; border-radius: 22px;
+  border: 1.5px solid rgba(201,149,108,0.4);
+  background: transparent; color: var(--gold);
+  font-size: 14px; font-weight: 600;
+}
+.bottom-pay {
+  flex: 2; height: 44px; border-radius: 22px;
+  background: linear-gradient(135deg, #F4A1B5, #C9956C);
+  border: none; color: #fff;
+  font-size: 15px; font-weight: 700;
+}
+
+/* ── 管理后台 ── */
+.admin-area {
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 24px;
+}
+.admin-frame {
+  width: 100%;
+  height: 820px;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  background: #fff;
+}
+
+/* 页面切换标签（手机端） */
+.page-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.page-tab {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.6);
+  background: transparent;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.page-tab.active {
+  background: rgba(244,161,181,0.3);
+  color: #fff;
+  border-color: rgba(244,161,181,0.5);
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部切换 -->
+<div class="top-switch">
+  <button class="switch-btn active" onclick="showView('mobile',this)">📱 小程序（用户端）</button>
+  <button class="switch-btn" onclick="showView('admin',this)">🖥 管理后台（商家端）</button>
+</div>
+
+<!-- 页面切换（手机页面） -->
+<div class="page-tabs" id="page-tabs">
+  <button class="page-tab active" onclick="showPhone('home')">首页</button>
+  <button class="page-tab" onclick="showPhone('detail')">活动详情</button>
+  <button class="page-tab" onclick="showPhone('order')">我的订单</button>
+  <button class="page-tab" onclick="showPhone('profile')">个人中心</button>
+</div>
+
+<!-- ===== 手机预览 ===== -->
+<div class="view active" id="view-mobile">
+  <div class="phone-area">
+
+    <!-- 手机 -->
+    <div class="phone-wrap">
+      <div class="phone" id="phone-main">
+
+        <!-- 状态栏 -->
+        <div class="phone-status">
+          <span class="phone-status__time">12:55</span>
+          <div class="phone-status__icons">
+            <span>●●●</span><span>WiFi</span><span>🔋</span>
+          </div>
+        </div>
+
+        <!-- ── 首页 ── -->
+        <div id="page-home" class="phone-body">
+          <div class="phone-nav" style="background:var(--pink)">
+            <div class="phone-nav__title">指尖芭蕾美甲美容</div>
+          </div>
+
+          <!-- Hero -->
+          <div class="hero">
+            <div class="hero__petal p1"></div>
+            <div class="hero__petal p2"></div>
+            <div class="hero__logo">✦</div>
+            <div class="hero__name">指尖芭蕾</div>
+            <div class="hero__slogan">让美丽在指尖绽放</div>
+          </div>
+
+          <!-- 店铺卡 -->
+          <div class="store-card">
+            <div class="store-card__row">
+              <div class="store-card__avatar">💅</div>
+              <div>
+                <div class="store-card__name">指尖芭蕾美甲美容</div>
+                <div class="store-card__stats">成员 3826+ · 跟团 912+</div>
+              </div>
+            </div>
+            <div class="store-card__btns">
+              <button class="btn-s btn-service" onclick="showToast('客服微信：fingerdance2024')">💬 客服</button>
+              <button class="btn-s btn-follow" id="btn-follow" onclick="toggleFollow()">+ 订阅</button>
+            </div>
+            <div class="store-card__banner">🛍 912+ 人跟 TA 做美甲</div>
+          </div>
+
+          <!-- 公告 -->
+          <div class="notice-bar">📢 春季美甲新款上架 | 手工甲片限时5折 | 护肤套餐买一送一</div>
+
+          <!-- 参团通知 -->
+          <div class="join-toast">
+            <span>👤</span>
+            <span><span class="join-toast__name">王**</span> 3分钟前参团了「春日光疗美甲套餐」</span>
+          </div>
+
+          <!-- 爆款活动 -->
+          <div class="section-header">
+            <div class="section-title">爆款活动</div>
+            <div class="section-more">查看全部 ›</div>
+          </div>
+
+          <div class="act-card" onclick="showPhone('detail')" style="cursor:pointer">
+            <div class="act-card__img">💅</div>
+            <div class="act-card__body">
+              <div class="act-card__title">春日光疗美甲套餐</div>
+              <div class="act-card__tags">
+                <span class="tag tag-pink">拼团价</span>
+                <span class="tag tag-gold">限时</span>
+              </div>
+              <div class="act-card__price">
+                <span class="price-cur">99</span>
+                <span class="price-ori">198</span>
+                <span class="tag tag-pink" style="font-size:10px">省99元</span>
+              </div>
+              <div class="act-card__progress">
+                <div class="progress-bar"><div class="progress-fill" style="width:93%"></div></div>
+                <span class="progress-text">28/30人</span>
+              </div>
+            </div>
+            <div class="act-card__footer">
+              <span class="act-card__joined">28人已参团</span>
+              <div class="act-card__btn">查看详情 →</div>
+            </div>
+          </div>
+
+          <div class="act-card" onclick="showPhone('detail')" style="cursor:pointer">
+            <div class="act-card__img" style="background:linear-gradient(135deg,#E8F4FD,#C8DFF4)">🧴</div>
+            <div class="act-card__body">
+              <div class="act-card__title">深层补水护肤体验</div>
+              <div class="act-card__tags">
+                <span class="tag tag-pink">新客专享</span>
+              </div>
+              <div class="act-card__price">
+                <span class="price-cur">128</span>
+                <span class="price-ori">268</span>
+                <span class="tag tag-gold" style="font-size:10px">省140元</span>
+              </div>
+              <div class="act-card__progress">
+                <div class="progress-bar"><div class="progress-fill" style="width:75%"></div></div>
+                <span class="progress-text">15/20人</span>
+              </div>
+            </div>
+            <div class="act-card__footer">
+              <span class="act-card__joined">15人已参团</span>
+              <div class="act-card__btn">查看详情 →</div>
+            </div>
+          </div>
+
+          <div style="height:20px"></div>
+        </div>
+
+        <!-- ── 详情页 ── -->
+        <div id="page-detail" class="phone-body" style="display:none">
+          <div class="phone-nav" style="background:#FFF9F6">
+            <div class="phone-nav__title" style="color:var(--text)">活动详情</div>
+          </div>
+
+          <div class="detail-img">💅</div>
+
+          <div class="detail-card">
+            <div class="detail-title">春日光疗美甲套餐</div>
+            <div class="act-card__tags" style="margin-bottom:12px">
+              <span class="tag tag-pink">拼团价</span>
+              <span class="tag tag-gold">限时</span>
+            </div>
+            <div class="detail-price-row">
+              <span class="detail-price-label">拼团价</span>
+              <span class="detail-price">99</span>
+              <span class="detail-ori">198</span>
+              <span class="tag tag-pink" style="font-size:10px">省99元</span>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="group-label">
+              <span>拼团进度</span>
+              <span class="group-count">28/30 人</span>
+            </div>
+            <div class="group-bar"><div class="group-fill"></div></div>
+            <div class="group-tip">还差 2 人即可成团 🔥</div>
+
+            <div class="avatars">
+              <span class="avatars__label">已参团</span>
+              <div class="avatar-dot">王</div>
+              <div class="avatar-dot">李</div>
+              <div class="avatar-dot">张</div>
+              <div class="avatar-dot">陈</div>
+              <div class="avatar-dot">+24</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="detail-desc">
+              <div class="detail-desc__title">活动详情</div>
+              <div class="detail-desc__text">🌸 春日新款光疗美甲，专业美甲师手工打造
+
+✨ 套餐内容：
+• 基础修型 + 打磨
+• 光疗甲 1 套（含款式选择）
+• 后续护理保养
+
+⏰ 有效期：30天内使用
+📍 到店使用
+
+💕 需提前预约，拼团成功后联系客服排期</div>
+            </div>
+
+            <div style="height:80px"></div>
+          </div>
+
+          <div class="bottom-bar">
+            <button class="bottom-order" onclick="showPhone('order')">我的订单</button>
+            <button class="bottom-pay" onclick="showPayModal()">¥99 立即支付</button>
+          </div>
+        </div>
+
+        <!-- ── 订单页 ── -->
+        <div id="page-order" class="phone-body" style="display:none">
+          <div class="phone-nav" style="background:#fff">
+            <div class="phone-nav__title" style="color:var(--text)">我的订单</div>
+          </div>
+          <div style="padding:16px">
+
+            <div class="act-card" style="margin:0 0 12px">
+              <div style="padding:14px;display:flex;gap:12px;align-items:center">
+                <div style="width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,#FDE8EF,#F4A1B5);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">💅</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">春日光疗美甲套餐</div>
+                  <div style="font-size:11px;color:var(--text-light)">下单时间：2026-03-28</div>
+                </div>
+              </div>
+              <div style="padding:10px 14px 12px;border-top:1px solid rgba(232,213,196,0.25);display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:20px;font-weight:800;color:var(--pink-dark)">¥99</span>
+                <span style="color:#52c41a;font-weight:700;font-size:13px">已成团 ✓</span>
+              </div>
+            </div>
+
+            <div class="act-card" style="margin:0">
+              <div style="padding:14px;display:flex;gap:12px;align-items:center">
+                <div style="width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,#E8F4FD,#C8DFF4);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">🧴</div>
+                <div style="flex:1">
+                  <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px">深层补水护肤体验</div>
+                  <div style="font-size:11px;color:var(--text-light)">下单时间：2026-03-30</div>
+                </div>
+              </div>
+              <div style="padding:10px 14px 12px;border-top:1px solid rgba(232,213,196,0.25);display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:20px;font-weight:800;color:var(--pink-dark)">¥128</span>
+                <span style="color:var(--gold);font-weight:700;font-size:13px">待成团 ⏳</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ── 个人中心 ── -->
+        <div id="page-profile" class="phone-body" style="display:none">
+          <div style="background:linear-gradient(145deg,#F9C0CF,#C9956C);padding:60px 20px 80px;display:flex;flex-direction:column;align-items:center;gap:12px">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,0.3);border:3px solid rgba(255,255,255,0.6);display:flex;align-items:center;justify-content:center;font-size:32px">💅</div>
+            <div style="color:#fff;font-size:18px;font-weight:700">点击登录</div>
+          </div>
+
+          <div class="store-card" style="margin:-30px 16px 0">
+            <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:16px">我的订单</div>
+            <div style="display:flex;justify-content:space-around">
+              <div style="text-align:center"><div style="font-size:26px">⏳</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px">待成团</div></div>
+              <div style="text-align:center"><div style="font-size:26px">✅</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px">已成团</div></div>
+              <div style="text-align:center"><div style="font-size:26px">🌸</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px">已使用</div></div>
+              <div style="text-align:center"><div style="font-size:26px">📋</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px">全部</div></div>
+            </div>
+          </div>
+
+          <div class="store-card" style="margin:12px 16px;padding:0 16px">
+            <div style="display:flex;align-items:center;padding:16px 0;gap:12px;border-bottom:1px solid rgba(232,213,196,0.3)">
+              <span style="font-size:22px">💬</span>
+              <span style="flex:1;font-size:14px">联系客服</span>
+              <span style="color:var(--text-light)">›</span>
+            </div>
+            <div style="display:flex;align-items:center;padding:16px 0;gap:12px">
+              <span style="font-size:22px">🌸</span>
+              <span style="flex:1;font-size:14px">关于指尖芭蕾</span>
+              <span style="color:var(--text-light)">›</span>
+            </div>
+          </div>
+
+          <div style="text-align:center;padding:24px;color:var(--text-light);font-size:12px;letter-spacing:3px">✦ 让美丽在指尖绽放 ✦</div>
+        </div>
+
+        <!-- TabBar -->
+        <div class="phone-tabbar">
+          <div class="tab-item active" id="tab-home" onclick="showPhone('home')">
+            <span class="tab-item__icon">🏠</span>
+            <span>首页</span>
+          </div>
+          <div class="tab-item" id="tab-activity" onclick="showPhone('detail')">
+            <span class="tab-item__icon">🌸</span>
+            <span>活动</span>
+          </div>
+          <div class="tab-item" id="tab-order" onclick="showPhone('order')">
+            <span class="tab-item__icon">🛍</span>
+            <span>订单</span>
+          </div>
+          <div class="tab-item" id="tab-profile" onclick="showPhone('profile')">
+            <span class="tab-item__icon">👤</span>
+            <span>我的</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="phone-label">用户端小程序</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== 管理后台 ===== -->
+<div class="view" id="view-admin">
+  <div class="admin-area">
+    <iframe class="admin-frame" src="admin/index.html"></iframe>
+  </div>
+</div>
+
+<style>
+/* Toast 提示 */
+.mini-toast {
+  position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: rgba(61,44,44,0.85); color: #fff;
+  padding: 10px 20px; border-radius: 20px; font-size: 13px;
+  opacity: 0; transition: all 0.25s; pointer-events: none; white-space: nowrap; z-index: 999;
+}
+.mini-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* 支付弹窗 */
+.pay-modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); z-index: 500;
+  align-items: flex-end; justify-content: center;
+}
+.pay-modal.show { display: flex; }
+.pay-modal__box {
+  width: 375px; background: #fff; border-radius: 24px 24px 0 0;
+  padding: 24px 24px 40px; text-align: center;
+}
+.pay-modal__title { font-size: 16px; font-weight: 700; color: #3D2C2C; margin-bottom: 6px; }
+.pay-modal__amount { font-size: 40px; font-weight: 800; color: #E88EA5; margin: 12px 0; }
+.pay-modal__amount::before { content: '¥'; font-size: 22px; }
+.pay-modal__desc { font-size: 13px; color: #B8A8A8; margin-bottom: 24px; }
+.pay-modal__btn {
+  width: 100%; height: 50px; border-radius: 25px;
+  background: linear-gradient(135deg, #F4A1B5, #C9956C);
+  border: none; color: #fff; font-size: 17px; font-weight: 700;
+  cursor: pointer; margin-bottom: 12px;
+}
+.pay-modal__cancel {
+  width: 100%; height: 44px; border-radius: 22px;
+  background: rgba(184,168,168,0.15); border: none;
+  color: #9E8E8E; font-size: 15px; cursor: pointer;
+}
+</style>
+
+<!-- Toast -->
+<div class="mini-toast" id="mini-toast"></div>
+
+<!-- 支付弹窗 -->
+<div class="pay-modal" id="pay-modal" onclick="if(event.target===this)closePayModal()">
+  <div class="pay-modal__box">
+    <div class="pay-modal__title">春日光疗美甲套餐</div>
+    <div class="pay-modal__amount">99</div>
+    <div class="pay-modal__desc">拼团成功后联系客服预约时间 · 30天内有效</div>
+    <button class="pay-modal__btn" onclick="simulatePay()">微信支付</button>
+    <button class="pay-modal__cancel" onclick="closePayModal()">取消</button>
+  </div>
+</div>
+
+<script>
+// ── 视图切换 ──
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'))
+  document.querySelectorAll('.switch-btn').forEach(b => b.classList.remove('active'))
+  document.getElementById(`view-${name}`).classList.add('active')
+  btn.classList.add('active')
+  document.getElementById('page-tabs').style.display = name === 'mobile' ? 'flex' : 'none'
+}
+
+// ── 手机页面切换 ──
+const phonePageMap = { home: 'tab-home', detail: 'tab-activity', order: 'tab-order', profile: 'tab-profile' }
+const pageLabelMap = { home: 0, detail: 1, order: 2, profile: 3 }
+
+function showPhone(name) {
+  ['home','detail','order','profile'].forEach(p => {
+    const el = document.getElementById(`page-${p}`)
+    if (el) el.style.display = 'none'
+  })
+  const target = document.getElementById(`page-${name}`)
+  if (target) target.style.display = 'block'
+
+  // 更新底部 tabbar
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'))
+  const tab = document.getElementById(phonePageMap[name])
+  if (tab) tab.classList.add('active')
+
+  // 更新顶部标签
+  const tabs = document.querySelectorAll('.page-tab')
+  tabs.forEach(t => t.classList.remove('active'))
+  const idx = pageLabelMap[name]
+  if (tabs[idx]) tabs[idx].classList.add('active')
+}
+
+// ── 订阅按钮 ──
+let followed = false
+function toggleFollow() {
+  followed = !followed
+  const btn = document.getElementById('btn-follow')
+  btn.textContent = followed ? '✓ 已订阅' : '+ 订阅'
+  btn.style.background = followed ? 'rgba(184,168,168,0.2)' : 'linear-gradient(135deg,#F4A1B5,#C9956C)'
+  btn.style.color = followed ? '#B8A8A8' : '#fff'
+  showToast(followed ? '已订阅，活动抢先知 🌸' : '已取消订阅')
+}
+
+// ── Toast ──
+let toastTimer
+function showToast(msg) {
+  const el = document.getElementById('mini-toast')
+  el.textContent = msg
+  el.classList.add('show')
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => el.classList.remove('show'), 2200)
+}
+
+// ── 支付弹窗 ──
+function showPayModal() {
+  document.getElementById('pay-modal').classList.add('show')
+}
+function closePayModal() {
+  document.getElementById('pay-modal').classList.remove('show')
+}
+function simulatePay() {
+  closePayModal()
+  // 模拟支付加载
+  showToast('支付处理中...')
+  setTimeout(() => {
+    showToast('🎉 参团成功！请联系客服预约')
+    // 跳转到订单页
+    setTimeout(() => showPhone('order'), 800)
+  }, 1500)
+}
+</script>
+</body>
+</html>

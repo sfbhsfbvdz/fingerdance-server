@@ -1,0 +1,228 @@
+/* app.wxss - 全局样式 */
+
+/* 颜色变量 */
+page {
+  --primary: #F4A1B5;
+  --primary-dark: #E88EA5;
+  --beige: #E8D5C4;
+  --rose-gold: #C9956C;
+  --bg: #FFF9F6;
+  --text-dark: #3D2C2C;
+  --text-mid: #7A6060;
+  --text-light: #B8A8A8;
+  --white: #FFFFFF;
+  --card-shadow: 0 4rpx 20rpx rgba(244, 161, 181, 0.15);
+  --border-radius: 20rpx;
+
+  background-color: #FFF9F6;
+  color: #3D2C2C;
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+}
+
+
+/* 通用容器 */
+.container {
+  min-height: 100vh;
+  background-color: #FFF9F6;
+  padding-bottom: 40rpx;
+}
+
+/* 卡片 */
+.card {
+  background: #FFFFFF;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(244, 161, 181, 0.15);
+  overflow: hidden;
+}
+
+/* 按钮样式 */
+.btn-primary {
+  background: linear-gradient(135deg, #F4A1B5 0%, #C9956C 100%);
+  color: #FFFFFF;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  border: none;
+  padding: 0 40rpx;
+  height: 84rpx;
+  line-height: 84rpx;
+  text-align: center;
+  letter-spacing: 2rpx;
+}
+
+.btn-primary::after {
+  border: none;
+}
+
+.btn-outline {
+  background: transparent;
+  color: #C9956C;
+  border: 2rpx solid #C9956C;
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  padding: 0 32rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  text-align: center;
+}
+
+.btn-outline::after {
+  border: none;
+}
+
+/* 标签 */
+.tag {
+  display: inline-block;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.tag-pink {
+  background: rgba(244, 161, 181, 0.15);
+  color: #E88EA5;
+}
+
+.tag-gold {
+  background: rgba(201, 149, 108, 0.15);
+  color: #C9956C;
+}
+
+.tag-beige {
+  background: rgba(232, 213, 196, 0.3);
+  color: #9A7A62;
+}
+
+/* 价格显示（WXSS 不支持 text 上的 ::before，¥ 符号直接写在模板里） */
+.price-current {
+  color: #E88EA5;
+  font-size: 40rpx;
+  font-weight: 700;
+}
+
+.price-original {
+  color: #B8A8A8;
+  font-size: 26rpx;
+  text-decoration: line-through;
+}
+
+/* 分割线 */
+.divider {
+  height: 1rpx;
+  background: rgba(232, 213, 196, 0.5);
+  margin: 20rpx 0;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100rpx 60rpx;
+}
+
+.empty-icon {
+  font-size: 100rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.4;
+}
+
+.empty-text {
+  color: #B8A8A8;
+  font-size: 28rpx;
+}
+
+/* 加载状态 */
+.loading-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60rpx;
+  color: #B8A8A8;
+  font-size: 26rpx;
+}
+
+/* 滚动提示 */
+.no-more {
+  text-align: center;
+  color: #C8B8B8;
+  font-size: 24rpx;
+  padding: 30rpx 0 20rpx;
+}
+
+/* 渐变文字 */
+.text-gradient {
+  background: linear-gradient(135deg, #F4A1B5, #C9956C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 章节标题 */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #3D2C2C;
+  position: relative;
+  padding-left: 16rpx;
+}
+
+.section-title::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 32rpx;
+  background: linear-gradient(180deg, #F4A1B5, #C9956C);
+  border-radius: 3rpx;
+}
+
+.section-more {
+  color: #B8A8A8;
+  font-size: 26rpx;
+}
+
+/* 点击反馈：所有 bindtap view 加 hover-class="tap-active" 即生效 */
+.tap-active {
+  opacity: 0.65;
+  transform: scale(0.98);
+}
+
+/* 状态徽章 */
+.badge-active {
+  background: linear-gradient(135deg, #F4A1B5, #E88EA5);
+  color: white;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.badge-pending {
+  background: rgba(232, 213, 196, 0.5);
+  color: #9A7A62;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}
+
+.badge-ended {
+  background: rgba(184, 168, 168, 0.2);
+  color: #B8A8A8;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 20rpx;
+}

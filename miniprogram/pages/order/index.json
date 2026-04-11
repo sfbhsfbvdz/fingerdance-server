@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "我的订单",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#FFF9F6",
+  "enablePullDownRefresh": true
+}

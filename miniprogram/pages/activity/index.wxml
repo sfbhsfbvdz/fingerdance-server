@@ -1,0 +1,57 @@
+<!-- pages/activity/index.wxml -->
+<view class="container">
+
+  <!-- Tab 切换 -->
+  <view class="tabs">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="key"
+      class="tab {{activeTab === index ? 'tab--active' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTabChange"
+    >
+      <text>{{item.label}}</text>
+      <view class="tab__bar" wx:if="{{activeTab === index}}"></view>
+    </view>
+  </view>
+
+  <!-- 活动列表 -->
+  <scroll-view
+    scroll-y
+    class="list"
+    enable-back-to-top
+  >
+    <!-- 骨架屏 -->
+    <view wx:if="{{loading}}" class="skeleton-list">
+      <view class="skeleton-item" wx:for="{{[1,2,3]}}" wx:key="*this">
+        <view class="skeleton-item__img"></view>
+        <view class="skeleton-item__body">
+          <view class="skeleton-item__line skeleton-item__line--long"></view>
+          <view class="skeleton-item__line skeleton-item__line--short"></view>
+          <view class="skeleton-item__bar"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 活动卡片 -->
+    <view wx:else class="list__inner">
+      <activity-card
+        wx:for="{{list}}"
+        wx:key="id"
+        activity="{{item}}"
+        mode="full"
+        bindtap="onActivityTap"
+      />
+
+      <!-- 空状态 -->
+      <view wx:if="{{list.length === 0}}" class="empty-state">
+        <text class="empty-icon">🌸</text>
+        <text class="empty-text">暂无{{tabs[activeTab].label}}的活动</text>
+        <text class="empty-sub">订阅后第一时间收到新活动通知</text>
+      </view>
+
+      <view wx:if="{{list.length > 0}}" class="no-more">— 已经到底了 —</view>
+    </view>
+  </scroll-view>
+
+</view>

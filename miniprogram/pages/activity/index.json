@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "活动专区",
+  "navigationBarBackgroundColor": "#FFFFFF",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#FFF9F6",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "activity-card": "../../components/activity-card/activity-card"
+  }
+}
