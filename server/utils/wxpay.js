@@ -89,12 +89,20 @@ async function unifiedOrder({ outTradeNo, totalFee, body, openid }) {
 
   // 调用微信统一下单接口
   const xml = toXml(params)
-  const resp = await fetch('http://api.mch.weixin.qq.com/pay/unifiedorder', {
-    method: 'POST',
-    body: xml,
-    headers: { 'Content-Type': 'text/xml' }
-  })
-  const respXml = await resp.text()
+  console.log('[wxpay] config check - appId:', WX_PAY_CONFIG.appId, 'mchId:', WX_PAY_CONFIG.mchId, 'hasKey:', !!WX_PAY_CONFIG.apiKey)
+  let respXml
+  try {
+    const resp = await fetch('http://api.mch.weixin.qq.com/pay/unifiedorder', {
+      method: 'POST',
+      body: xml,
+      headers: { 'Content-Type': 'text/xml' }
+    })
+    respXml = await resp.text()
+    console.log('[wxpay] raw response:', respXml.substring(0, 300))
+  } catch (fetchErr) {
+    console.error('[wxpay] fetch error:', fetchErr.message)
+    throw new Error('连接微信支付失败: ' + fetchErr.message)
+  }
   const result = fromXml(respXml)
 
   if (result.return_code !== 'SUCCESS' || result.result_code !== 'SUCCESS') {
