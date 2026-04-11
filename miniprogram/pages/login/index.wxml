@@ -1,0 +1,70 @@
+<!-- pages/login/index.wxml -->
+<view class="container">
+
+  <!-- 品牌区 -->
+  <view class="brand">
+    <view class="brand-logo">💅</view>
+    <text class="brand-name">指尖芭蕾</text>
+    <text class="brand-slogan">让美丽在指尖绽放</text>
+  </view>
+
+  <!-- Step 1：授权说明 -->
+  <view class="card" wx:if="{{step === 1}}">
+    <text class="card-title">微信账号登录</text>
+    <text class="card-desc">登录后可参加拼团活动、查看订单记录</text>
+
+    <view class="features">
+      <view class="feature-item">
+        <text class="feature-icon">🎀</text>
+        <text class="feature-text">参与限时拼团活动</text>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">📋</text>
+        <text class="feature-text">查看我的订单记录</text>
+      </view>
+      <view class="feature-item">
+        <text class="feature-icon">🔒</text>
+        <text class="feature-text">安全可靠，不泄露隐私</text>
+      </view>
+    </view>
+
+    <!-- 微信头像按钮触发授权 -->
+    <button
+      class="btn-wx-login"
+      open-type="chooseAvatar"
+      bindchooseavatar="onChooseAvatar"
+    >
+      <text class="btn-wx-icon">微信</text>
+      <text class="btn-wx-text">使用微信账号登录</text>
+    </button>
+
+    <text class="skip-btn" bindtap="onSkip">暂不登录</text>
+
+    <text class="privacy-tip">登录即表示同意《用户服务协议》和《隐私政策》</text>
+  </view>
+
+  <!-- Step 2：设置昵称 -->
+  <view class="card" wx:if="{{step === 2}}">
+    <text class="card-title">设置你的昵称</text>
+    <text class="card-desc">让其他团友认识你</text>
+
+    <view class="avatar-preview">
+      <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="avatar-img" mode="aspectFill"/>
+      <view wx:else class="avatar-empty">💅</view>
+    </view>
+
+    <view class="input-wrap">
+      <input
+        class="nickname-input"
+        type="nickname"
+        placeholder="请输入你的微信昵称"
+        placeholder-class="input-placeholder"
+        bindblur="onNickNameBlur"
+        maxlength="20"
+      />
+    </view>
+
+    <button class="btn-confirm" bindtap="onConfirm">完成登录</button>
+  </view>
+
+</view>

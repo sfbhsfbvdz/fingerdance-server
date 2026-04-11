@@ -86,11 +86,17 @@ App({
 
   _onLoginReady() {
     this.globalData.loginReady = true
-    // 依次执行等待队列里的回调
     this.globalData.loginCallbacks.forEach(cb => cb(this.globalData.openid))
     this.globalData.loginCallbacks = []
-    // 记录本次访问
     this._recordPageView()
+
+    // 首次进入（无昵称）时跳转登录引导页
+    const userInfo = wx.getStorageSync('userInfo')
+    const shown = wx.getStorageSync('loginShown')
+    if (!userInfo && !shown) {
+      wx.setStorageSync('loginShown', true)
+      wx.navigateTo({ url: '/pages/login/index' })
+    }
   },
 
   _recordPageView() {
