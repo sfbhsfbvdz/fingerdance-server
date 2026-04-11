@@ -46,26 +46,41 @@ App({
     wx.login({
       success: (res) => {
         if (!res.code) return this._onLoginReady()
-        wx.cloud.callContainer({
-          config: { env: 'prod-3gfpsiqy6afca7e1' },
-          path: '/api/auth/login',
-          method: 'POST',
-          data: { code: res.code },
-          header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x' },
-          success: (r) => {
-            if (r.statusCode === 200 && r.data.openid) {
-              const { openid, token } = r.data
-              const expire = Date.now() + 7 * 24 * 3600 * 1000
-              wx.setStorageSync('openid', openid)
-              wx.setStorageSync('token', token)
-              wx.setStorageSync('tokenExpire', expire)
-              this.globalData.openid = openid
-              this.globalData.token = token
-            }
-            this._onLoginReady()
-          },
-          fail: () => this._onLoginReady()
-        })
+        const onSuccess = (r) => {
+          if (r.statusCode === 200 && r.data && r.data.openid) {
+            const { openid, token } = r.data
+            const expire = Date.now() + 7 * 24 * 3600 * 1000
+            wx.setStorageSync('openid', openid)
+            wx.setStorageSync('token', token)
+            wx.setStorageSync('tokenExpire', expire)
+            this.globalData.openid = openid
+            this.globalData.token = token
+          }
+          this._onLoginReady()
+        }
+        const onFail = () => this._onLoginReady()
+
+        // 优先用 callContainer（云托管内网），不可用时降级 wx.request
+        if (wx.cloud && wx.cloud.callContainer) {
+          wx.cloud.callContainer({
+            config: { env: 'prod-3gfpsiqy6afca7e1' },
+            path: '/api/auth/login',
+            method: 'POST',
+            data: { code: res.code },
+            header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x' },
+            success: onSuccess,
+            fail: onFail
+          })
+        } else {
+          wx.request({
+            url: `${this.globalData.baseUrl}/api/auth/login`,
+            method: 'POST',
+            data: { code: res.code },
+            header: { 'Content-Type': 'application/json' },
+            success: onSuccess,
+            fail: onFail
+          })
+        }
       },
       fail: () => this._onLoginReady()
     })
