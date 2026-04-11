@@ -4,6 +4,10 @@
 
 const crypto = require('crypto')
 const fetch = require('node-fetch')
+const https = require('https')
+
+// 云托管环境证书问题，跳过验证（仅用于调用微信官方API）
+const wxPayAgent = new https.Agent({ rejectUnauthorized: false })
 
 // ============================================================
 // 👇 填入你的商户信息
@@ -92,10 +96,11 @@ async function unifiedOrder({ outTradeNo, totalFee, body, openid }) {
   console.log('[wxpay] config check - appId:', WX_PAY_CONFIG.appId, 'mchId:', WX_PAY_CONFIG.mchId, 'hasKey:', !!WX_PAY_CONFIG.apiKey)
   let respXml
   try {
-    const resp = await fetch('http://api.mch.weixin.qq.com/pay/unifiedorder', {
+    const resp = await fetch('https://api.mch.weixin.qq.com/pay/unifiedorder', {
       method: 'POST',
       body: xml,
-      headers: { 'Content-Type': 'text/xml' }
+      headers: { 'Content-Type': 'text/xml' },
+      agent: wxPayAgent
     })
     respXml = await resp.text()
     console.log('[wxpay] raw response:', respXml.substring(0, 300))
