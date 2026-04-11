@@ -85,6 +85,10 @@
 }
 
 /* 微信登录按钮 */
+.btn-wx-login.loading {
+  opacity: 0.7;
+}
+
 .btn-wx-login {
   width: 100%;
   height: 96rpx;
@@ -128,6 +132,33 @@
   text-align: center;
   line-height: 1.6;
 }
+
+/* 头像按钮（降级模式）*/
+.avatar-btn {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  padding: 0;
+  background: transparent;
+  border: none;
+  margin: 8rpx 0 40rpx;
+}
+.avatar-btn::after { border: none; }
+
+.avatar-empty {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  background: rgba(244,161,181,0.1);
+  border: 4rpx dashed rgba(244,161,181,0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+.avatar-empty-icon { font-size: 56rpx; }
+.avatar-empty-tip { font-size: 18rpx; color: #C9956C; }
 
 /* 头像预览 */
 .avatar-preview {

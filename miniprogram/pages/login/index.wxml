@@ -8,10 +8,10 @@
     <text class="brand-slogan">让美丽在指尖绽放</text>
   </view>
 
-  <!-- Step 1：授权说明 -->
-  <view class="card" wx:if="{{step === 1}}">
-    <text class="card-title">微信账号登录</text>
-    <text class="card-desc">登录后可参加拼团活动、查看订单记录</text>
+  <!-- 正常模式：一键登录 -->
+  <view class="card" wx:if="{{!fallback}}">
+    <text class="card-title">微信一键登录</text>
+    <text class="card-desc">授权后即可参与拼团、查看订单</text>
 
     <view class="features">
       <view class="feature-item">
@@ -24,40 +24,45 @@
       </view>
       <view class="feature-item">
         <text class="feature-icon">🔒</text>
-        <text class="feature-text">安全可靠，不泄露隐私</text>
+        <text class="feature-text">安全可靠，不获取手机号</text>
       </view>
     </view>
 
-    <!-- 微信头像按钮触发授权 -->
+    <!-- 一键登录按钮：点击后微信弹出官方授权弹窗 -->
     <button
-      class="btn-wx-login"
-      open-type="chooseAvatar"
-      bindchooseavatar="onChooseAvatar"
+      class="btn-wx-login {{loading ? 'loading' : ''}}"
+      bindtap="onWxLogin"
+      disabled="{{loading}}"
     >
-      <text class="btn-wx-icon">微信</text>
-      <text class="btn-wx-text">使用微信账号登录</text>
+      <text class="btn-wx-text">{{loading ? '授权中...' : '微信一键登录'}}</text>
     </button>
 
-    <text class="skip-btn" bindtap="onSkip">暂不登录</text>
-
+    <text class="skip-btn" bindtap="onSkip">暂不登录，先逛逛</text>
     <text class="privacy-tip">登录即表示同意《用户服务协议》和《隐私政策》</text>
   </view>
 
-  <!-- Step 2：设置昵称 -->
-  <view class="card" wx:if="{{step === 2}}">
-    <text class="card-title">设置你的昵称</text>
-    <text class="card-desc">让其他团友认识你</text>
+  <!-- 降级模式：手动设置头像昵称（新版微信 getUserProfile 已废弃时） -->
+  <view class="card" wx:if="{{fallback}}">
+    <text class="card-title">设置个人信息</text>
+    <text class="card-desc">点击头像和输入框即可快速填入微信信息</text>
 
-    <view class="avatar-preview">
+    <button
+      class="avatar-btn"
+      open-type="chooseAvatar"
+      bindchooseavatar="onChooseAvatar"
+    >
       <image wx:if="{{avatarUrl}}" src="{{avatarUrl}}" class="avatar-img" mode="aspectFill"/>
-      <view wx:else class="avatar-empty">💅</view>
-    </view>
+      <view wx:else class="avatar-empty">
+        <text class="avatar-empty-icon">💅</text>
+        <text class="avatar-empty-tip">点击选择头像</text>
+      </view>
+    </button>
 
     <view class="input-wrap">
       <input
         class="nickname-input"
         type="nickname"
-        placeholder="请输入你的微信昵称"
+        placeholder="点击填入微信昵称"
         placeholder-class="input-placeholder"
         bindblur="onNickNameBlur"
         maxlength="20"
@@ -65,6 +70,7 @@
     </view>
 
     <button class="btn-confirm" bindtap="onConfirm">完成登录</button>
+    <text class="skip-btn" bindtap="onSkip">暂不登录</text>
   </view>
 
 </view>
