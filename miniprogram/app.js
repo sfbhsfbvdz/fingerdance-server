@@ -45,15 +45,16 @@ App({
   silentLogin() {
     wx.login({
       success: (res) => {
-        if (!res.code) return
-        wx.request({
-          url: `${this.globalData.baseUrl}/api/auth/login`,
+        if (!res.code) return this._onLoginReady()
+        wx.cloud.callContainer({
+          config: { env: 'prod-3gfpsiqy6afca7e1' },
+          path: '/api/auth/login',
           method: 'POST',
           data: { code: res.code },
+          header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x-003' },
           success: (r) => {
             if (r.statusCode === 200 && r.data.openid) {
               const { openid, token } = r.data
-              // token 有效期 7 天
               const expire = Date.now() + 7 * 24 * 3600 * 1000
               wx.setStorageSync('openid', openid)
               wx.setStorageSync('token', token)
