@@ -9,10 +9,10 @@ const fetch = require('node-fetch')
 // 👇 填入你的商户信息
 // ============================================================
 const WX_PAY_CONFIG = {
-  appId: process.env.WX_APP_ID || 'wx805ec7bc2c34ec27',
-  mchId: process.env.WX_MCH_ID || '1743779585',
-  apiKey: process.env.WX_API_KEY || 'F6C93FFAD17A68E1DC8CFE8738ECFEC9',
-  notifyUrl: process.env.WX_NOTIFY_URL || 'https://fingerdance.cn/api/payment/notify',
+  appId: process.env.WX_APP_ID,
+  mchId: process.env.WX_MCH_ID,
+  apiKey: process.env.WX_API_KEY,
+  notifyUrl: process.env.WX_NOTIFY_URL,
 }
 // ============================================================
 

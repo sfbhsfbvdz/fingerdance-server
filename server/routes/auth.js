@@ -5,8 +5,8 @@ const router = express.Router()
 const https = require('https')
 const db = require('../db')
 
-const APP_ID = process.env.WX_APP_ID || 'wx805ec7bc2c34ec27'
-const APP_SECRET = process.env.WX_APP_SECRET || '630191b0514f1026a6ccaedea3faf1d5'
+const APP_ID = process.env.WX_APP_ID
+const APP_SECRET = process.env.WX_APP_SECRET
 
 /**
  * POST /api/auth/login
