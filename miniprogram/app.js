@@ -14,7 +14,7 @@ App({
 
   onLaunch() {
     // 初始化云开发
-    wx.cloud.init({ env: 'prod-3gfpsiqy6afca7e1', traceUser: true })
+    wx.cloud.init({ traceUser: true })
 
     // 1. 读取本地缓存的用户信息
     const cachedInfo = wx.getStorageSync('userInfo')
