@@ -89,7 +89,7 @@ async function unifiedOrder({ outTradeNo, totalFee, body, openid }) {
 
   // 调用微信统一下单接口
   const xml = toXml(params)
-  const resp = await fetch('https://api.mch.weixin.qq.com/pay/unifiedorder', {
+  const resp = await fetch('http://api.mch.weixin.qq.com/pay/unifiedorder', {
     method: 'POST',
     body: xml,
     headers: { 'Content-Type': 'text/xml' }

@@ -17,8 +17,8 @@ router.post('/login', async (req, res) => {
   const { code } = req.body
   if (!code) return res.status(400).json({ message: '缺少 code' })
 
-  // 云托管内部用 http，外部用 https
-  const url = `https://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
+  // 云托管内部必须用 http（不是 https），否则报 self-signed certificate
+  const url = `http://api.weixin.qq.com/sns/jscode2session?appid=${APP_ID}&secret=${APP_SECRET}&js_code=${code}&grant_type=authorization_code`
 
   try {
     const wxRes = await fetch(url)
