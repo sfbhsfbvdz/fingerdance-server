@@ -1,6 +1,6 @@
 // utils/request.js - 使用微信云托管 callContainer，无需配置合法域名
 const ENV_ID = 'prod-3gfpsiqy6afca7e1'
-const SERVICE = 'express-0a2x-003'
+const SERVICE = 'express-0a2x'
 
 function request({ url, method = 'GET', data = {}, showLoading = false }) {
   if (showLoading) wx.showLoading({ title: '加载中', mask: true })

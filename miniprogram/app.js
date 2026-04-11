@@ -51,7 +51,7 @@ App({
           path: '/api/auth/login',
           method: 'POST',
           data: { code: res.code },
-          header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x-003' },
+          header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x' },
           success: (r) => {
             if (r.statusCode === 200 && r.data.openid) {
               const { openid, token } = r.data
@@ -101,10 +101,12 @@ App({
   },
 
   _recordPageView() {
-    wx.request({
-      url: `${this.globalData.baseUrl}/api/stats/pageview`,
+    wx.cloud.callContainer({
+      config: { env: 'prod-3gfpsiqy6afca7e1' },
+      path: '/api/stats/pageview',
       method: 'POST',
       data: { timestamp: Date.now() },
+      header: { 'Content-Type': 'application/json', 'X-WX-SERVICE': 'express-0a2x' },
       fail() {}
     })
   },
