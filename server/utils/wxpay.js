@@ -98,7 +98,8 @@ async function unifiedOrder({ outTradeNo, totalFee, body, openid }) {
   const result = fromXml(respXml)
 
   if (result.return_code !== 'SUCCESS' || result.result_code !== 'SUCCESS') {
-    throw new Error(result.err_code_des || result.return_msg || '统一下单失败')
+    console.error('[wxpay] unifiedOrder failed:', JSON.stringify(result))
+    throw new Error(result.err_code_des || result.err_code || result.return_msg || '统一下单失败')
   }
 
   // 生成小程序端调起支付所需的签名参数

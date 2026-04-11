@@ -58,7 +58,8 @@ router.post('/prepay', async (req, res) => {
   } catch (err) {
     // 下单失败，删除刚插入的订单记录
     db.prepare('DELETE FROM orders WHERE id = ?').run(insertResult.lastInsertRowid)
-    res.status(500).json({ message: err.message })
+    console.error('[payment] unifiedOrder error:', err.message)
+    res.status(500).json({ message: err.message, detail: err.message })
   }
 })
 
