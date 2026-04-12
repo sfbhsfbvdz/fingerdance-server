@@ -76,5 +76,31 @@ Page({
       content: '指尖芭蕾美甲美容，专注于美甲、护肤、美容服务。\n\n我们相信美丽是一种态度，让指尖绽放你的精彩。',
       showCancel: false
     })
+  },
+
+  onLogout() {
+    wx.showModal({
+      title: '退出登录',
+      content: '确定要退出登录吗？',
+      confirmText: '退出',
+      confirmColor: '#E57373',
+      success: (res) => {
+        if (!res.confirm) return
+        // 清除所有登录态和用户信息
+        wx.removeStorageSync('openid')
+        wx.removeStorageSync('token')
+        wx.removeStorageSync('tokenExpire')
+        wx.removeStorageSync('userInfo')
+        wx.removeStorageSync('loginShown')
+        // 重置 globalData
+        const app = getApp()
+        app.globalData.openid = ''
+        app.globalData.token = ''
+        app.globalData.userInfo = null
+        app.globalData.loginReady = false
+        // 跳转登录页
+        wx.navigateTo({ url: '/pages/login/index' })
+      }
+    })
   }
 })

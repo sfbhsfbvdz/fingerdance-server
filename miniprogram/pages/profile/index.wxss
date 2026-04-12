@@ -158,6 +158,20 @@
   margin-left: 60rpx;
 }
 
+/* 退出登录按钮 */
+.btn-logout {
+  width: 100%;
+  height: 84rpx;
+  line-height: 84rpx;
+  background: #fff;
+  color: #E57373;
+  border: 2rpx solid rgba(229,115,115,0.3);
+  border-radius: 50rpx;
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
+}
+.btn-logout::after { border: none; }
+
 /* 品牌标语 */
 .brand-footer {
   text-align: center;

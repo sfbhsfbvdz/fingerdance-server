@@ -92,6 +92,11 @@
     </view>
   </view>
 
+  <!-- 退出登录 -->
+  <view style="padding: 0 32rpx 20rpx;">
+    <button class="btn-logout" bindtap="onLogout">退出登录</button>
+  </view>
+
   <!-- 品牌标语 -->
   <view class="brand-footer">
     <text class="brand-footer__text">✦ 让美丽在指尖绽放 ✦</text>
