@@ -117,6 +117,38 @@
 
 .btn-wx-text { font-size: 32rpx; }
 
+/* 隐私协议勾选行 */
+.privacy-row {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  width: 100%;
+  margin-bottom: 32rpx;
+}
+
+.privacy-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex: 1;
+}
+
+.privacy-normal {
+  font-size: 24rpx;
+  color: #7A6060;
+}
+
+.privacy-link {
+  font-size: 24rpx;
+  color: #F4A1B5;
+  text-decoration: underline;
+}
+
+/* 按钮置灰状态 */
+.btn-disabled {
+  opacity: 0.45;
+}
+
 /* 跳过 */
 .skip-btn {
   font-size: 26rpx;

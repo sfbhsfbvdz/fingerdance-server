@@ -28,20 +28,29 @@
       </view>
     </view>
 
-    <!-- 一键登录按钮：点击后微信弹出官方授权弹窗 -->
+    <!-- 隐私协议勾选（默认未勾选，用户必须主动勾选）-->
+    <view class="privacy-row">
+      <checkbox-group bindchange="onAgreeChange">
+        <checkbox value="agree" checked="{{false}}" color="#F4A1B5"/>
+      </checkbox-group>
+      <view class="privacy-text">
+        <text class="privacy-normal">我已阅读并同意</text>
+        <text class="privacy-link" bindtap="onViewPrivacy">《用户服务协议》与《隐私政策》</text>
+      </view>
+    </view>
+
+    <!-- 登录按钮：未勾选时置灰 -->
     <button
-      class="btn-wx-login {{loading ? 'loading' : ''}}"
+      class="btn-wx-login {{!agreed ? 'btn-disabled' : ''}} {{loading ? 'loading' : ''}}"
       bindtap="onWxLogin"
-      disabled="{{loading}}"
     >
       <text class="btn-wx-text">{{loading ? '授权中...' : '微信一键登录'}}</text>
     </button>
 
     <text class="skip-btn" bindtap="onSkip">暂不登录，先逛逛</text>
-    <text class="privacy-tip">登录即表示同意《用户服务协议》和《隐私政策》</text>
   </view>
 
-  <!-- 降级模式：手动设置头像昵称（新版微信 getUserProfile 已废弃时） -->
+  <!-- 降级模式：手动设置头像昵称 -->
   <view class="card" wx:if="{{fallback}}">
     <text class="card-title">设置个人信息</text>
     <text class="card-desc">点击头像和输入框即可快速填入微信信息</text>
@@ -69,7 +78,18 @@
       />
     </view>
 
-    <button class="btn-confirm" bindtap="onConfirm">完成登录</button>
+    <!-- 隐私协议勾选 -->
+    <view class="privacy-row">
+      <checkbox-group bindchange="onAgreeChange">
+        <checkbox value="agree" checked="{{false}}" color="#F4A1B5"/>
+      </checkbox-group>
+      <view class="privacy-text">
+        <text class="privacy-normal">我已阅读并同意</text>
+        <text class="privacy-link" bindtap="onViewPrivacy">《用户服务协议》与《隐私政策》</text>
+      </view>
+    </view>
+
+    <button class="btn-confirm {{!agreed ? 'btn-disabled' : ''}}" bindtap="onConfirm">完成登录</button>
     <text class="skip-btn" bindtap="onSkip">暂不登录</text>
   </view>
 

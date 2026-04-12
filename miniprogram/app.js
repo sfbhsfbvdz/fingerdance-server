@@ -16,6 +16,22 @@ App({
     // 初始化云开发
     wx.cloud.init({ traceUser: true })
 
+    // 注册隐私授权回调（微信要求：API 触发时弹出同意/拒绝弹窗）
+    if (wx.onNeedPrivacyAuthorization) {
+      wx.onNeedPrivacyAuthorization(resolve => {
+        wx.showModal({
+          title: '温馨提示',
+          content: '请您仔细阅读并充分理解相关条款，点击同意即代表您已阅读并同意《用户服务协议》与《隐私政策》',
+          confirmText: '同意',
+          cancelText: '不同意',
+          confirmColor: '#F4A1B5',
+          success: (res) => {
+            resolve({ event: res.confirm ? 'agree' : 'disagree' })
+          }
+        })
+      })
+    }
+
     // 1. 读取本地缓存的用户信息
     const cachedInfo = wx.getStorageSync('userInfo')
     if (cachedInfo) this.globalData.userInfo = cachedInfo
