@@ -1,5 +1,6 @@
 // pages/profile/index.js
 const app = getApp()
+const { request } = require('../../utils/request')
 
 Page({
   data: {
@@ -41,13 +42,37 @@ Page({
     if (val) this.setData({ tempNickName: val, editing: true })
   },
 
-  // ── 保存个人信息 ──
-  onSave() {
+  // ── 保存个人信息（先做内容安全检测）──
+  async onSave() {
     const { tempNickName, tempAvatarUrl } = this.data
     if (!tempNickName) {
       wx.showToast({ title: '请输入昵称', icon: 'none' })
       return
     }
+
+    wx.showLoading({ title: '检测中...', mask: true })
+    try {
+      const openid = app.globalData.openid || wx.getStorageSync('openid')
+      const result = await request({
+        url: '/api/security/check-text',
+        method: 'POST',
+        data: { content: tempNickName, openid }
+      })
+      wx.hideLoading()
+      if (!result.safe) {
+        wx.showModal({
+          title: '昵称不合规',
+          content: result.message || '昵称含有违规信息，请修改后重试',
+          showCancel: false,
+          confirmText: '知道了'
+        })
+        return
+      }
+    } catch (e) {
+      wx.hideLoading()
+      // 检测失败不阻断保存
+    }
+
     const userInfo = { nickName: tempNickName, avatarUrl: tempAvatarUrl }
     wx.setStorageSync('userInfo', userInfo)
     app.globalData.userInfo = userInfo

@@ -14,6 +14,7 @@ app.use('/api/activities', require('./routes/activities'))
 app.use('/api/stats', require('./routes/stats'))
 app.use('/api/orders', require('./routes/orders'))
 app.use('/api/payment', require('./routes/payment'))
+app.use('/api/security', require('./routes/security'))
 
 // 兼容旧数据库：若缺少新字段则自动补上
 const db = require('./db')

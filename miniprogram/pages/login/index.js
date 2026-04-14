@@ -1,5 +1,6 @@
 // pages/login/index.js
 const app = getApp()
+const { request } = require('../../utils/request')
 
 Page({
   data: {
@@ -66,7 +67,31 @@ Page({
     this._saveAndGo({ nickName, avatarUrl })
   },
 
-  _saveAndGo({ nickName, avatarUrl }) {
+  async _saveAndGo({ nickName, avatarUrl }) {
+    // 内容安全检测
+    try {
+      const openid = app.globalData.openid || wx.getStorageSync('openid')
+      if (openid && nickName) {
+        const result = await request({
+          url: '/api/security/check-text',
+          method: 'POST',
+          data: { content: nickName, openid }
+        })
+        if (!result.safe) {
+          this.setData({ loading: false })
+          wx.showModal({
+            title: '昵称不合规',
+            content: result.message || '昵称含有违规信息，请修改后重试',
+            showCancel: false,
+            confirmText: '知道了'
+          })
+          return
+        }
+      }
+    } catch (e) {
+      // 检测失败不阻断登录
+    }
+
     const userInfo = { nickName, avatarUrl }
     wx.setStorageSync('userInfo', userInfo)
     app.globalData.userInfo = userInfo
