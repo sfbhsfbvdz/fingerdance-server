@@ -266,9 +266,90 @@
     }
 
     .toast.show { transform: translateX(0); }
+
+    /* ===== 登录弹窗 ===== */
+    .login-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(145deg, #F9C0CF, #C9956C);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-overlay.show { display: flex; }
+
+    .login-box {
+      background: #fff;
+      border-radius: 24px;
+      padding: 48px 40px;
+      width: 360px;
+      max-width: 90vw;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    .login-box__icon { font-size: 48px; margin-bottom: 8px; }
+    .login-box__title { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
+    .login-box__sub { font-size: 13px; color: var(--text-light); margin-bottom: 32px; }
+    .login-input {
+      width: 100%;
+      height: 48px;
+      border: 2px solid var(--beige);
+      border-radius: 12px;
+      padding: 0 16px;
+      font-size: 16px;
+      outline: none;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+    .login-input:focus { border-color: var(--pink); }
+    .login-btn {
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(135deg, #F4A1B5, #C9956C);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    .login-btn:hover { opacity: 0.9; }
+    .login-error { font-size: 13px; color: #E57373; margin-top: 12px; min-height: 18px; }
+
+    /* 退出登录按钮 */
+    .sidebar__logout {
+      padding: 16px 24px;
+      border-top: 1px solid rgba(244,161,181,0.15);
+    }
+    .btn-logout {
+      width: 100%;
+      padding: 10px;
+      background: none;
+      border: 1px solid rgba(229,115,115,0.3);
+      border-radius: 10px;
+      color: #E57373;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-logout:hover { background: rgba(229,115,115,0.05); }
   </style>
 </head>
 <body>
+
+<!-- 登录弹窗 -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <div class="login-box__icon">💅</div>
+    <div class="login-box__title">指尖芭蕾管理后台</div>
+    <div class="login-box__sub">请输入管理密码以继续</div>
+    <input class="login-input" type="password" id="adminPassword" placeholder="管理密码"
+      onkeydown="if(event.key==='Enter') doLogin()">
+    <button class="login-btn" onclick="doLogin()">登 录</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
 
 <!-- 侧边栏 -->
 <aside class="sidebar">
@@ -295,6 +376,9 @@
       <span>推客追踪</span>
     </div>
   </nav>
+  <div class="sidebar__logout">
+    <button class="btn-logout" onclick="doLogout()">退出登录</button>
+  </div>
 </aside>
 
 <!-- 顶部栏 -->
@@ -576,7 +660,63 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const BASE_URL = 'http://localhost:3000'
+const BASE_URL = ''
+
+// ===== 登录状态管理 =====
+function getToken() {
+  return localStorage.getItem('adminToken') || ''
+}
+
+function showLoginOverlay() {
+  document.getElementById('loginOverlay').classList.add('show')
+  document.getElementById('adminPassword').value = ''
+  document.getElementById('loginError').textContent = ''
+  setTimeout(() => document.getElementById('adminPassword').focus(), 100)
+}
+
+function hideLoginOverlay() {
+  document.getElementById('loginOverlay').classList.remove('show')
+}
+
+async function doLogin() {
+  const password = document.getElementById('adminPassword').value
+  if (!password) return
+  document.getElementById('loginError').textContent = ''
+  try {
+    const res = await fetch(`${BASE_URL}/api/admin/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password })
+    })
+    if (res.status === 401) {
+      document.getElementById('loginError').textContent = '密码错误，请重试'
+      document.getElementById('adminPassword').value = ''
+      document.getElementById('adminPassword').focus()
+      return
+    }
+    const data = await res.json()
+    localStorage.setItem('adminToken', data.token)
+    hideLoginOverlay()
+    initDashboard()
+  } catch (e) {
+    document.getElementById('loginError').textContent = '网络错误，请稍后重试'
+  }
+}
+
+async function doLogout() {
+  if (!confirm('确定要退出登录吗？')) return
+  const token = getToken()
+  if (token) {
+    try {
+      await fetch(`${BASE_URL}/api/admin/logout`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+    } catch (e) {}
+  }
+  localStorage.removeItem('adminToken')
+  showLoginOverlay()
+}
 
 // ===== 页面切换 =====
 const pageTitles = { dashboard: '数据概览', activities: '活动管理', orders: '订单管理', referral: '推客追踪' }
@@ -604,10 +744,15 @@ updateTime()
 
 // ===== API 请求 =====
 async function apiFetch(url, options = {}) {
-  const res = await fetch(`${BASE_URL}${url}`, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options
-  })
+  const token = getToken()
+  const headers = { 'Content-Type': 'application/json' }
+  if (token) headers['Authorization'] = `Bearer ${token}`
+  const res = await fetch(`${BASE_URL}${url}`, { headers, ...options })
+  if (res.status === 401) {
+    localStorage.removeItem('adminToken')
+    showLoginOverlay()
+    throw new Error('未登录')
+  }
   if (!res.ok) throw new Error(`HTTP ${res.status}`)
   return res.json()
 }
@@ -993,7 +1138,11 @@ async function loadReferralPage() {
 }
 
 // ===== 启动 =====
-initDashboard()
+if (getToken()) {
+  initDashboard()
+} else {
+  showLoginOverlay()
+}
 </script>
 </body>
 </html>

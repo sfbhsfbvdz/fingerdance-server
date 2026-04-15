@@ -2,6 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const db = require('../db')
+const adminAuth = require('../middleware/adminAuth')
 
 // GET /api/activities?status=active
 router.get('/', (req, res) => {
@@ -29,7 +30,7 @@ router.get('/:id', (req, res) => {
 })
 
 // POST /api/activities（管理后台用）
-router.post('/', (req, res) => {
+router.post('/', adminAuth, (req, res) => {
   const { title, description, imageUrl, originalPrice, groupPrice, minParticipants, status, tags, endTime } = req.body
   if (!title || !originalPrice || !groupPrice) {
     return res.status(400).json({ message: '标题和价格为必填项' })
@@ -44,7 +45,7 @@ router.post('/', (req, res) => {
 })
 
 // PUT /api/activities/:id（管理后台用）
-router.put('/:id', (req, res) => {
+router.put('/:id', adminAuth, (req, res) => {
   const activity = db.prepare('SELECT * FROM activities WHERE id = ?').get(req.params.id)
   if (!activity) return res.status(404).json({ message: '活动不存在' })
 
@@ -71,7 +72,7 @@ router.put('/:id', (req, res) => {
 })
 
 // DELETE /api/activities/:id（管理后台用）
-router.delete('/:id', (req, res) => {
+router.delete('/:id', adminAuth, (req, res) => {
   const activity = db.prepare('SELECT * FROM activities WHERE id = ?').get(req.params.id)
   if (!activity) return res.status(404).json({ message: '活动不存在' })
   db.prepare('DELETE FROM activities WHERE id = ?').run(req.params.id)

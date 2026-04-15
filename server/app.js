@@ -1,6 +1,7 @@
 // server/app.js
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -8,7 +9,11 @@ const PORT = process.env.PORT || 3000
 app.use(cors())
 app.use(express.json())
 
+// 管理后台静态文件（必须在 API 路由之前注册）
+app.use('/admin', express.static(path.join(__dirname, '../admin')))
+
 // 路由
+app.use('/api/admin', require('./routes/admin'))
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/activities', require('./routes/activities'))
 app.use('/api/stats', require('./routes/stats'))
